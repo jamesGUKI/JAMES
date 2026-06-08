@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>James Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+    scroll-behavior:smooth;
+}
+
+:root{
+    --bg:#f5f7fa;
+    --text:#222;
+    --card:#fff;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+}
+
+body.dark{
+    --bg:#0d1117;
+    --text:#fff;
+    --card:#161b22;
+}
+
+/* NAVBAR */
+
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:1000;
+    backdrop-filter:blur(12px);
+    background:rgba(0,0,0,.2);
+}
+
+nav{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 25px;
+}
+
+.logo{
+    color:white;
+    font-size:28px;
+    font-weight:700;
+}
+
+.menu{
+    list-style:none;
+    display:flex;
+    gap:25px;
+}
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    position:relative;
+}
+
+.menu a::after{
+    content:"";
+    width:0;
+    height:2px;
+    background:white;
+    position:absolute;
+    left:0;
+    bottom:-4px;
+    transition:.3s;
+}
+
+.menu a:hover::after{
+    width:100%;
+}
+
+.toggle{
+    color:white;
+    cursor:pointer;
+    font-size:22px;
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    overflow:hidden;
+    position:relative;
+}
+
+.profile{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    border:5px solid white;
+    object-fit:cover;
+    animation:float 4s ease-in-out infinite;
+    box-shadow:0 15px 35px rgba(0,0,0,.3);
+}
+
+@keyframes float{
+    50%{
+        transform:translateY(-15px);
+    }
+}
+
+.hero h1{
+    font-size:55px;
+    margin-top:20px;
+}
+
+.hero p{
+    font-size:20px;
+    margin-top:10px;
+}
+
+.btn{
+    margin-top:25px;
+    padding:14px 35px;
+    background:white;
+    color:#764ba2;
+    border-radius:50px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-5px);
+}
+
+/* SECTIONS */
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+}
+
+section{
+    padding:90px 0;
+}
+
+.title{
+    text-align:center;
+    font-size:36px;
+    margin-bottom:40px;
+}
+
+/* PROJECTS */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:var(--card);
+    border-radius:20px;
+    overflow:hidden;
+    text-decoration:none;
+    color:inherit;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+    transition:.4s;
+}
+
+.card:hover{
+    transform:translateY(-12px);
+}
+
+.card-image{
+    height:200px;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:22px;
+    font-weight:600;
+}
+
+.card-content{
+    padding:25px;
+}
+
+/* INFO */
+
+.info{
+    background:var(--card);
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+    margin-top:30px;
+}
+
+/* ANIMATION */
+
+.hidden{
+    opacity:0;
+    transform:translateY(60px);
+    transition:1s;
+}
+
+.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* FOOTER */
+
+footer{
+    background:#111;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+    <div class="logo">James</div>
+
+    <ul class="menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="toggle" onclick="darkMode()">🌙</div>
+</nav>
+</header>
+
+<section class="hero" id="home">
+
+    <img src="mario.jpg" class="profile">
+
+    <h1>James</h1>
+
+    <p id="typing"></p>
+
+    <a href="#contact" class="btn">
+        Contact Me
+    </a>
+
+</section>
+
+<section id="projects" class="container hidden">
+
+    <h2 class="title">My Projects</h2>
+
+    <div class="grid">
+
+        <a href="#" class="card">
+            <div class="card-image">Portfolio</div>
+            <div class="card-content">
+                <h3>Portfolio Website</h3>
+                <p>Modern personal portfolio design.</p>
+            </div>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-image">Business</div>
+            <div class="card-content">
+                <h3>Business Landing Page</h3>
+                <p>Clean and professional company site.</p>
+            </div>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-image">E-Commerce</div>
+            <div class="card-content">
+                <h3>Online Store</h3>
+                <p>Modern shopping experience UI.</p>
+            </div>
+        </a>
+
+    </div>
+
+</section>
+
+<section id="about" class="container hidden">
+
+    <h2 class="title">About Me</h2>
+
+    <div class="info">
+        <p><b>Name:</b> James</p>
+        <br>
+        <p><b>Location:</b> Kathmandu</p>
+        <br>
+        <p><b>Qualification:</b> SEE</p>
+        <br>
+        <p><b>Training:</b> Web Design</p>
+    </div>
+
+</section>
+
+<section id="contact" class="container hidden">
+
+    <h2 class="title">Contact</h2>
+
+    <div class="info">
+        <p>📞 9853454556</p>
+        <br>
+        <p>📧 james@gmail.com</p>
+    </div>
+
+</section>
+
+<footer>
+    © 2026 James Portfolio
+</footer>
+
+<script>
+
+/* Dark Mode */
+
+function darkMode(){
+    document.body.classList.toggle("dark");
+}
+
+/* Typing Effect */
+
+const text = "Creative Web Designer";
+let i = 0;
+
+function typing(){
+    if(i < text.length){
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing,100);
+    }
+}
+
+typing();
+
+/* Scroll Reveal */
+
+const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.classList.add("show");
+        }
+    });
+});
+
+document.querySelectorAll(".hidden").forEach(el=>{
+    observer.observe(el);
+});
+
+</script>
+
+</body>
+</html>
