@@ -4,195 +4,477 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Kathmandu Times</title>
+
 <style>
-    /* --- RESET & GENERAL --- */
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Arial', sans-serif;}
-    body { min-height:100vh; overflow-x:hidden; transition: background 0.5s, color 0.5s;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
 
-    /* --- LIGHT THEME --- */
-    body.light { 
-        background: linear-gradient(120deg, #FF7F50, #00BFFF); /* coral to blue */
-        color: #333;
-    }
-    header.light { background-color: #FF6F61; color: white; }
-    nav.light { background-color: #007BFF; } /* blue navbar */
-    nav.light a { color:white; }
-    .news-card.light { background-color: rgba(255,255,255,0.9); color:#333; }
-    footer.light { background-color:#FF6F61; color:white; }
+:root{
+    --coral:#ff6f61;
+    --lightblue:#7fd3ff;
+    --dark:#0f172a;
+    --white:#ffffff;
+    --card:#ffffffcc;
+}
 
-    /* --- DARK THEME --- */
-    body.dark { 
-        background: linear-gradient(120deg, #1e1e2f, #2b2b3a); 
-        color: #ddd;
-    }
-    header.dark { background-color: #ff6f61; color:white; }
-    nav.dark { background-color: #222; }
-    nav.dark a { color:#ddd; }
-    .news-card.dark { background-color: rgba(50,50,60,0.95); color:#ddd; }
-    footer.dark { background-color:#222; color:white; }
+body{
+    background:linear-gradient(135deg,#eaf8ff,#d6f1ff);
+    min-height:100vh;
+    overflow-x:hidden;
+    transition:.4s;
+}
 
-    /* --- CLOCK CANVAS --- */
-    #clockCanvas { position:fixed; top:0; left:0; z-index:-1; }
+/* CLOCK BACKGROUND */
+#clockCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+    opacity:.12;
+}
 
-    /* --- HEADER --- */
-    header { padding:20px; text-align:center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);}
-    header h1 { font-size:2.5em; letter-spacing:2px; }
+/* NAVBAR */
+nav{
+    background:linear-gradient(90deg,var(--coral),var(--lightblue));
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 4px 20px rgba(0,0,0,.15);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
 
-    /* --- NAV --- */
-    nav { display:flex; justify-content:center; padding:10px 0; gap:20px; flex-wrap:wrap; transition: background 0.5s;}
-    nav a { text-decoration:none; font-weight:bold; transition:0.3s;}
-    nav a:hover { opacity:0.8; }
+.logo{
+    color:#0077ff;
+    font-size:2rem;
+    font-weight:bold;
+    letter-spacing:2px;
+}
 
-    /* --- DARK MODE ICON --- */
-    .toggle-icon {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        font-size: 24px;
-        cursor: pointer;
-        color: #fff;
-        z-index: 10;
-        transition: color 0.3s;
-    }
-    .toggle-icon:hover { opacity:0.8; }
+.nav-links{
+    display:flex;
+    gap:25px;
+}
 
-    /* --- MAIN CONTENT --- */
-    .container { max-width:1200px; margin:30px auto; padding:0 20px; }
-    .news-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
-    .news-card { border-radius:10px; overflow:hidden; box-shadow:0 8px 16px rgba(0,0,0,0.2); transition: transform 0.3s, background 0.5s, color 0.5s;}
-    .news-card:hover { transform:translateY(-5px); }
-    .news-card img { width:100%; height:180px; object-fit:cover; }
-    .news-content { padding:15px; }
-    .news-content h2 { font-size:1.5em; margin-bottom:10px; color:#FF6F61; }
-    .news-content p { font-size:1em; line-height:1.5em; }
+.nav-links a{
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    transition:.3s;
+}
 
-    /* --- FOOTER --- */
-    footer { text-align:center; padding:20px; margin-top:40px; transition: background 0.5s, color 0.5s;}
+.nav-links a:hover{
+    transform:translateY(-2px);
+}
+
+/* DARK MODE BUTTON */
+.dark-toggle{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+    box-shadow:0 0 15px rgba(0,0,0,.2);
+    transition:.4s;
+}
+
+/* HEADER */
+.hero{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.hero h1{
+    color:#0077ff;
+    font-size:4rem;
+    margin-bottom:10px;
+}
+
+.hero p{
+    color:#444;
+    font-size:1.2rem;
+}
+
+/* CLOCK */
+.live-clock{
+    margin-top:20px;
+    font-size:2rem;
+    color:var(--coral);
+    font-weight:bold;
+}
+
+/* NEWS GRID */
+.news-container{
+    width:90%;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+    padding-bottom:50px;
+}
+
+.news-card{
+    background:var(--card);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+    transition:.3s;
+}
+
+.news-card:hover{
+    transform:translateY(-8px);
+}
+
+.image-placeholder{
+    height:220px;
+    background:linear-gradient(
+        135deg,
+        var(--coral),
+        var(--lightblue)
+    );
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:1.4rem;
+    font-weight:bold;
+}
+
+.news-content{
+    padding:20px;
+}
+
+.news-content h2{
+    margin-bottom:10px;
+    color:#0077ff;
+}
+
+.news-content p{
+    line-height:1.7;
+    color:#555;
+}
+
+/* FOOTER */
+footer{
+    background:linear-gradient(90deg,var(--coral),var(--lightblue));
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+}
+
+/* DARK MODE */
+.dark{
+    background:#0f172a;
+}
+
+.dark .news-card{
+    background:#1e293bcc;
+}
+
+.dark .news-content p{
+    color:#ddd;
+}
+
+.dark .hero p{
+    color:#ddd;
+}
+
+.dark nav{
+    box-shadow:0 0 30px rgba(0,0,0,.5);
+}
+
+.dark footer{
+    color:white;
+}
+
+.dark .logo,
+.dark .hero h1{
+    color:#66c2ff;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+    font-size:2.7rem;
+}
+
+.nav-links{
+    display:none;
+}
+
+}
 </style>
 </head>
-<body class="light">
 
-<!-- Moon icon for dark mode toggle -->
-<div class="toggle-icon" onclick="toggleDarkMode()">🌙</div>
+<body>
 
 <canvas id="clockCanvas"></canvas>
 
-<header class="light">
-    <h1>The Kathmandu Times</h1>
-</header>
+<nav>
+    <div class="logo">
+        The Kathmandu Times
+    </div>
 
-<nav class="light">
-    <a href="#">Home</a>
-    <a href="#">National</a>
-    <a href="#">International</a>
-    <a href="#">Technology</a>
-    <a href="#">Sports</a>
-    <a href="#">Entertainment</a>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Politics</a>
+        <a href="#">Business</a>
+        <a href="#">Sports</a>
+        <a href="#">Technology</a>
+        <a href="#">World</a>
+    </div>
+
+    <button class="dark-toggle" id="themeBtn">
+        ☀️
+    </button>
 </nav>
 
-<div class="container">
-    <div class="news-grid">
-        <div class="news-card light">
-            <img src="https://via.placeholder.com/400x180" alt="News Image">
-            <div class="news-content">
-                <h2>Kathmandu Celebrates Festival</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
-            </div>
+<section class="hero">
+    <h1>The Kathmandu Times</h1>
+    <p>Your trusted source for local and global news</p>
+
+    <div class="live-clock" id="clock">
+        00:00:00
+    </div>
+</section>
+
+<section class="news-container">
+
+    <div class="news-card">
+        <div class="image-placeholder">
+            Image Placeholder
         </div>
-        <div class="news-card light">
-            <img src="https://via.placeholder.com/400x180" alt="News Image">
-            <div class="news-content">
-                <h2>Tech Innovations in Nepal</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
-            </div>
-        </div>
-        <div class="news-card light">
-            <img src="https://via.placeholder.com/400x180" alt="News Image">
-            <div class="news-content">
-                <h2>Local Sports Team Wins</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
-            </div>
-        </div>
-        <div class="news-card light">
-            <img src="https://via.placeholder.com/400x180" alt="News Image">
-            <div class="news-content">
-                <h2>Entertainment Highlights</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
-            </div>
+        <div class="news-content">
+            <h2>Kathmandu City Updates</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dolores deserunt fugit asperiores repellendus,
+                suscipit laudantium magni. Lorem ipsum dolor sit amet
+                consectetur adipisicing elit.
+            </p>
         </div>
     </div>
-</div>
 
-<footer class="light">
-    &copy; 2026 The Kathmandu Times. All Rights Reserved.
+    <div class="news-card">
+        <div class="image-placeholder">
+            Image Placeholder
+        </div>
+        <div class="news-content">
+            <h2>Nepal Business News</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Quae, recusandae. Lorem ipsum dolor sit amet
+                consectetur adipisicing elit. Dicta officiis
+                consequatur voluptatum.
+            </p>
+        </div>
+    </div>
+
+    <div class="news-card">
+        <div class="image-placeholder">
+            Image Placeholder
+        </div>
+        <div class="news-content">
+            <h2>Technology</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Deleniti, sunt! Lorem ipsum dolor sit amet consectetur
+                adipisicing elit. Nemo, pariatur.
+            </p>
+        </div>
+    </div>
+
+    <div class="news-card">
+        <div class="image-placeholder">
+            Image Placeholder
+        </div>
+        <div class="news-content">
+            <h2>Sports Headlines</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Iure atque consequatur deleniti provident veniam
+                accusamus officia.
+            </p>
+        </div>
+    </div>
+
+    <div class="news-card">
+        <div class="image-placeholder">
+            Image Placeholder
+        </div>
+        <div class="news-content">
+            <h2>World News</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Voluptatibus inventore reprehenderit dignissimos
+                reiciendis exercitationem.
+            </p>
+        </div>
+    </div>
+
+    <div class="news-card">
+        <div class="image-placeholder">
+            Image Placeholder
+        </div>
+        <div class="news-content">
+            <h2>Tourism & Travel</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Eius aperiam reprehenderit maxime fugiat consectetur
+                omnis.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<footer>
+    © 2025 The Kathmandu Times | Modern Digital News Portal
 </footer>
 
 <script>
-    // --- DARK MODE TOGGLE ---
-    function toggleDarkMode() {
-        const body = document.body;
-        const header = document.querySelector('header');
-        const nav = document.querySelector('nav');
-        const footer = document.querySelector('footer');
-        const cards = document.querySelectorAll('.news-card');
 
-        if(body.classList.contains('light')){
-            body.classList.replace('light','dark');
-            header.classList.replace('light','dark');
-            nav.classList.replace('light','dark');
-            footer.classList.replace('light','dark');
-            cards.forEach(c=>c.classList.replace('light','dark'));
-        } else {
-            body.classList.replace('dark','light');
-            header.classList.replace('dark','light');
-            nav.classList.replace('dark','light');
-            footer.classList.replace('dark','light');
-            cards.forEach(c=>c.classList.replace('dark','light'));
-        }
-    }
+/* LIVE CLOCK */
 
-    // --- CLOCK ANIMATION ---
-    const canvas = document.getElementById('clockCanvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
+function updateClock(){
 
-    function resizeCanvas() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-    }
+const now = new Date();
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+let h = String(now.getHours()).padStart(2,'0');
+let m = String(now.getMinutes()).padStart(2,'0');
+let s = String(now.getSeconds()).padStart(2,'0');
 
-    const clockRings = [];
-    const ringCount = 50;
+document.getElementById("clock").innerHTML =
+`${h}:${m}:${s}`;
 
-    for(let i=0;i<ringCount;i++){
-        clockRings.push({
-            x: Math.random()*width,
-            y: Math.random()*height,
-            radius: Math.random()*50+20,
-            speed: Math.random()*0.02+0.01,
-            angle: Math.random()*Math.PI*2,
-            color: `rgba(255,255,255,${Math.random()*0.5+0.2})`
-        });
-    }
+}
 
-    function drawClockRings(){
-        ctx.clearRect(0,0,width,height);
-        clockRings.forEach(r=>{
-            ctx.beginPath();
-            ctx.arc(r.x + Math.cos(r.angle)*r.radius, r.y + Math.sin(r.angle)*r.radius, 3, 0, Math.PI*2);
-            ctx.fillStyle = r.color;
-            ctx.fill();
-            r.angle += r.speed;
-        });
-        requestAnimationFrame(drawClockRings);
-    }
+setInterval(updateClock,1000);
+updateClock();
 
-    drawClockRings();
+/* DARK MODE */
+
+const btn=document.getElementById("themeBtn");
+
+btn.addEventListener("click",()=>{
+
+document.body.classList.toggle("dark");
+
+if(document.body.classList.contains("dark")){
+btn.innerHTML="🌙";
+}else{
+btn.innerHTML="☀️";
+}
+
+});
+
+/* ANIMATED CLOCK BACKGROUND */
+
+const canvas=document.getElementById("clockCanvas");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize",resize);
+
+function drawClock(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+let cx=canvas.width/2;
+let cy=canvas.height/2;
+
+let radius=Math.min(canvas.width,canvas.height)/4;
+
+ctx.beginPath();
+ctx.arc(cx,cy,radius,0,Math.PI*2);
+ctx.strokeStyle="#0099ff";
+ctx.lineWidth=8;
+ctx.stroke();
+
+for(let i=0;i<12;i++){
+
+let angle=(i*Math.PI)/6;
+
+let x1=cx+Math.cos(angle)*radius*0.85;
+let y1=cy+Math.sin(angle)*radius*0.85;
+
+let x2=cx+Math.cos(angle)*radius;
+let y2=cy+Math.sin(angle)*radius;
+
+ctx.beginPath();
+ctx.moveTo(x1,y1);
+ctx.lineTo(x2,y2);
+ctx.strokeStyle="#ff6f61";
+ctx.lineWidth=4;
+ctx.stroke();
+
+}
+
+let now=new Date();
+
+let sec=now.getSeconds();
+let min=now.getMinutes();
+let hr=now.getHours()%12;
+
+let secAngle=(Math.PI/30)*sec-Math.PI/2;
+let minAngle=(Math.PI/30)*min-Math.PI/2;
+let hrAngle=(Math.PI/6)*hr+(Math.PI/360)*min-Math.PI/2;
+
+ctx.beginPath();
+ctx.moveTo(cx,cy);
+ctx.lineTo(
+cx+Math.cos(hrAngle)*radius*0.5,
+cy+Math.sin(hrAngle)*radius*0.5
+);
+ctx.lineWidth=8;
+ctx.strokeStyle="#0077ff";
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(cx,cy);
+ctx.lineTo(
+cx+Math.cos(minAngle)*radius*0.7,
+cy+Math.sin(minAngle)*radius*0.7
+);
+ctx.lineWidth=5;
+ctx.strokeStyle="#00c3ff";
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(cx,cy);
+ctx.lineTo(
+cx+Math.cos(secAngle)*radius*0.85,
+cy+Math.sin(secAngle)*radius*0.85
+);
+ctx.lineWidth=2;
+ctx.strokeStyle="#ff6f61";
+ctx.stroke();
+
+requestAnimationFrame(drawClock);
+
+}
+
+drawClock();
+
 </script>
+
 </body>
 </html>
