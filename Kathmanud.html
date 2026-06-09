@@ -5,132 +5,83 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Kathmandu Times</title>
 <style>
-    /* --- GENERAL STYLING --- */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Arial', sans-serif;
-    }
+    /* --- RESET & GENERAL --- */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Arial', sans-serif;}
+    body { min-height:100vh; overflow-x:hidden; transition: background 0.5s, color 0.5s;}
 
-    body {
-        background: linear-gradient(120deg, #00c6ff, #0072ff); /* light blue gradient */
+    /* --- LIGHT THEME --- */
+    body.light { 
+        background: linear-gradient(120deg, #FF7F50, #00BFFF); /* coral to blue */
         color: #333;
-        min-height: 100vh;
-        overflow-x: hidden;
-        position: relative;
     }
+    header.light { background-color: #FF6F61; color: white; }
+    nav.light { background-color: #007BFF; } /* blue navbar */
+    nav.light a { color:white; }
+    .news-card.light { background-color: rgba(255,255,255,0.9); color:#333; }
+    footer.light { background-color:#FF6F61; color:white; }
 
-    /* --- CLOCK ANIMATION BACKGROUND --- */
-    #clockCanvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -1;
+    /* --- DARK THEME --- */
+    body.dark { 
+        background: linear-gradient(120deg, #1e1e2f, #2b2b3a); 
+        color: #ddd;
     }
+    header.dark { background-color: #ff6f61; color:white; }
+    nav.dark { background-color: #222; }
+    nav.dark a { color:#ddd; }
+    .news-card.dark { background-color: rgba(50,50,60,0.95); color:#ddd; }
+    footer.dark { background-color:#222; color:white; }
+
+    /* --- CLOCK CANVAS --- */
+    #clockCanvas { position:fixed; top:0; left:0; z-index:-1; }
 
     /* --- HEADER --- */
-    header {
-        background-color: #ff6f61; /* coral color */
-        padding: 20px;
-        text-align: center;
-        color: white;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
+    header { padding:20px; text-align:center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);}
+    header h1 { font-size:2.5em; letter-spacing:2px; }
 
-    header h1 {
-        font-size: 2.5em;
-        letter-spacing: 2px;
-    }
+    /* --- NAV --- */
+    nav { display:flex; justify-content:center; padding:10px 0; gap:20px; flex-wrap:wrap; transition: background 0.5s;}
+    nav a { text-decoration:none; font-weight:bold; transition:0.3s;}
+    nav a:hover { opacity:0.8; }
 
-    /* --- NAVBAR --- */
-    nav {
-        display: flex;
-        justify-content: center;
-        background-color: #ff8c7a;
-        padding: 10px 0;
-        gap: 20px;
-        flex-wrap: wrap;
+    /* --- DARK MODE ICON --- */
+    .toggle-icon {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
+        cursor: pointer;
+        color: #fff;
+        z-index: 10;
+        transition: color 0.3s;
     }
-
-    nav a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
-    nav a:hover {
-        color: #ffe5e0;
-    }
+    .toggle-icon:hover { opacity:0.8; }
 
     /* --- MAIN CONTENT --- */
-    .container {
-        max-width: 1200px;
-        margin: 30px auto;
-        padding: 0 20px;
-    }
-
-    .news-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-
-    .news-card {
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        transition: transform 0.3s;
-    }
-
-    .news-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .news-card img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-    }
-
-    .news-content {
-        padding: 15px;
-    }
-
-    .news-content h2 {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-        color: #ff6f61;
-    }
-
-    .news-content p {
-        font-size: 1em;
-        line-height: 1.5em;
-        color: #333;
-    }
+    .container { max-width:1200px; margin:30px auto; padding:0 20px; }
+    .news-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+    .news-card { border-radius:10px; overflow:hidden; box-shadow:0 8px 16px rgba(0,0,0,0.2); transition: transform 0.3s, background 0.5s, color 0.5s;}
+    .news-card:hover { transform:translateY(-5px); }
+    .news-card img { width:100%; height:180px; object-fit:cover; }
+    .news-content { padding:15px; }
+    .news-content h2 { font-size:1.5em; margin-bottom:10px; color:#FF6F61; }
+    .news-content p { font-size:1em; line-height:1.5em; }
 
     /* --- FOOTER --- */
-    footer {
-        text-align: center;
-        padding: 20px;
-        background-color: #ff6f61;
-        color: white;
-        margin-top: 40px;
-    }
-
+    footer { text-align:center; padding:20px; margin-top:40px; transition: background 0.5s, color 0.5s;}
 </style>
 </head>
-<body>
+<body class="light">
+
+<!-- Moon icon for dark mode toggle -->
+<div class="toggle-icon" onclick="toggleDarkMode()">🌙</div>
 
 <canvas id="clockCanvas"></canvas>
 
-<header>
+<header class="light">
     <h1>The Kathmandu Times</h1>
 </header>
 
-<nav>
+<nav class="light">
     <a href="#">Home</a>
     <a href="#">National</a>
     <a href="#">International</a>
@@ -141,28 +92,28 @@
 
 <div class="container">
     <div class="news-grid">
-        <div class="news-card">
+        <div class="news-card light">
             <img src="https://via.placeholder.com/400x180" alt="News Image">
             <div class="news-content">
                 <h2>Kathmandu Celebrates Festival</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
             </div>
         </div>
-        <div class="news-card">
+        <div class="news-card light">
             <img src="https://via.placeholder.com/400x180" alt="News Image">
             <div class="news-content">
                 <h2>Tech Innovations in Nepal</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
             </div>
         </div>
-        <div class="news-card">
+        <div class="news-card light">
             <img src="https://via.placeholder.com/400x180" alt="News Image">
             <div class="news-content">
                 <h2>Local Sports Team Wins</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
             </div>
         </div>
-        <div class="news-card">
+        <div class="news-card light">
             <img src="https://via.placeholder.com/400x180" alt="News Image">
             <div class="news-content">
                 <h2>Entertainment Highlights</h2>
@@ -172,11 +123,34 @@
     </div>
 </div>
 
-<footer>
+<footer class="light">
     &copy; 2026 The Kathmandu Times. All Rights Reserved.
 </footer>
 
 <script>
+    // --- DARK MODE TOGGLE ---
+    function toggleDarkMode() {
+        const body = document.body;
+        const header = document.querySelector('header');
+        const nav = document.querySelector('nav');
+        const footer = document.querySelector('footer');
+        const cards = document.querySelectorAll('.news-card');
+
+        if(body.classList.contains('light')){
+            body.classList.replace('light','dark');
+            header.classList.replace('light','dark');
+            nav.classList.replace('light','dark');
+            footer.classList.replace('light','dark');
+            cards.forEach(c=>c.classList.replace('light','dark'));
+        } else {
+            body.classList.replace('dark','light');
+            header.classList.replace('dark','light');
+            nav.classList.replace('dark','light');
+            footer.classList.replace('dark','light');
+            cards.forEach(c=>c.classList.replace('dark','light'));
+        }
+    }
+
     // --- CLOCK ANIMATION ---
     const canvas = document.getElementById('clockCanvas');
     const ctx = canvas.getContext('2d');
@@ -220,6 +194,5 @@
 
     drawClockRings();
 </script>
-
 </body>
 </html>
