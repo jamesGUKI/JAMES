@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Kathmandu Times</title>
+<title>Kathmandu Times</title>
 
 <style>
 *{
@@ -13,19 +13,9 @@
     font-family:'Georgia','Times New Roman',serif;
 }
 
-:root{
-    --primary:#000;       /* Black for text */
-    --secondary:#555;     /* Gray text */
-    --accent:#222;        /* Dark accent */
-    --bg:#fdfdfd;         /* White background */
-    --modal-bg:rgba(0,0,0,0.7);
-}
-
 body{
-    min-height:100vh;
-    background:var(--bg);
-    transition:.4s;
-    overflow-x:hidden;
+    background:#ffffff;
+    color:#111;
 }
 
 /* NAV */
@@ -34,149 +24,162 @@ nav{
     justify-content:space-between;
     align-items:center;
     padding:15px 25px;
-    background:#fff;
-    border-bottom:1px solid #ccc;
+    border-bottom:1px solid #ddd;
     position:sticky;
     top:0;
-    z-index:100;
+    background:white;
 }
 
 .logo{
     font-size:1.8rem;
     font-weight:bold;
-    color:var(--primary);
-}
-
-.nav-buttons{
-    display:flex;
-    gap:10px;
+    letter-spacing:1px;
 }
 
 .btn{
-    width:50px;
-    height:50px;
     border:none;
-    border-radius:50%;
+    background:#111;
+    color:white;
+    padding:10px 14px;
+    border-radius:6px;
     cursor:pointer;
-    background:#f0f0f0;
-    font-size:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-    transition:.3s;
-}
-.btn:hover{
-    background:#e0e0e0;
+    margin-left:10px;
 }
 
 /* HERO */
 .hero{
-    text-align:center;
-    padding:60px 20px 20px;
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+    padding:30px;
 }
 
-.hero h1{
-    font-size:3rem;
-    color:var(--primary);
+/* HOT STORY */
+.featured{
+    border-right:1px solid #ddd;
+    padding-right:20px;
 }
 
-.hero p{
-    color:var(--secondary);
+.tag{
+    font-size:12px;
+    font-weight:bold;
+    color:#b30000;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.featured h1{
+    font-size:2.5rem;
+    margin:10px 0;
+}
+
+.featured p{
     font-size:1.1rem;
-    margin-top:10px;
+    color:#444;
+    line-height:1.5;
 }
 
-/* TICKER */
-.ticker{
-    margin:25px auto;
-    width:80%;
-    background:#f7f7f7;
-    padding:10px;
-    border-radius:30px;
-    overflow:hidden;
-    border:1px solid #ddd;
-}
-
-.ticker span{
+.readmore{
+    margin-top:15px;
     display:inline-block;
-    white-space:nowrap;
-    animation:move 15s linear infinite;
-    color:var(--primary);
-    font-weight:600;
+    padding:8px 14px;
+    border:1px solid #111;
+    cursor:pointer;
+    transition:.3s;
+}
+.readmore:hover{
+    background:#111;
+    color:white;
 }
 
-@keyframes move{
-    from{transform:translateX(100%)}
-    to{transform:translateX(-100%)}
+/* TRENDING */
+.trending{
+    padding-left:15px;
 }
 
-/* NEWS MODAL */
+.trending h3{
+    margin-bottom:10px;
+    border-bottom:2px solid #111;
+    display:inline-block;
+}
+
+.trending ul{
+    list-style:none;
+}
+
+.trending li{
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+    cursor:pointer;
+}
+
+.trending li:hover{
+    color:#b30000;
+}
+
+/* GRID NEWS */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    padding:0 30px 40px;
+}
+
+.card{
+    border:1px solid #eee;
+    padding:15px;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.card h4{
+    margin-bottom:8px;
+}
+
+.card p{
+    color:#555;
+    font-size:0.95rem;
+}
+
+/* MODAL */
 .modal{
     position:fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    background:var(--modal-bg);
+    background:rgba(0,0,0,0.6);
     display:none;
     justify-content:center;
     align-items:center;
 }
 
 .modal-box{
+    background:white;
     width:90%;
     max-width:600px;
-    height:auto;
-    background:white;
-    border-radius:10px;
     padding:20px;
-    overflow:auto;
-}
-
-.categories{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-bottom:20px;
+    border-radius:10px;
 }
 
 .cat{
-    padding:12px 20px;
-    border-radius:8px;
-    background:#000;
-    color:white;
-    cursor:pointer;
-    font-weight:bold;
-    text-align:center;
-    transition:.3s;
-}
-.cat:hover{
-    background:#555;
-}
-
-/* NEWS ITEMS */
-.news-item{
+    display:block;
     padding:12px;
-    border-bottom:1px solid #eee;
-    cursor:pointer;
-    transition:.2s;
-}
-.news-item:hover{
-    background:#f5f5f5;
-}
-
-/* DARK MODE */
-.dark{
+    margin:8px 0;
     background:#111;
-    color:#eee;
-}
-
-.dark .hero p,
-.dark .news-item{
-    color:#ccc;
-}
-
-.dark .modal-box{
-    background:#222;
     color:white;
+    text-align:center;
+    cursor:pointer;
+    border-radius:6px;
+}
+
+.news-item{
+    padding:10px;
+    border-bottom:1px solid #eee;
 }
 
 </style>
@@ -186,74 +189,120 @@ nav{
 
 <nav>
     <div class="logo">Kathmandu Times</div>
-    <div class="nav-buttons">
-        <button class="btn" id="newsBtn">📰</button>
-        <button class="btn" id="themeBtn">☀️</button>
+    <div>
+        <button class="btn" id="newsBtn">News</button>
     </div>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-    <h1>Kathmandu Times</h1>
-    <p>Your trusted news source</p>
 
-    <div class="ticker">
-        <span>Breaking: Kathmandu grows smart city tech • Nepal tourism booming • Global markets rise • Weather: Clear skies today</span>
+    <!-- FEATURED HOT NEWS -->
+    <div class="featured">
+        <div class="tag">🔥 Hot News</div>
+        <h1>Kathmandu Enters New Digital Era With Smart City Expansion</h1>
+        <p>
+            The government has announced a massive upgrade to Kathmandu’s infrastructure,
+            introducing AI-powered traffic systems, digital public services, and smart monitoring
+            across the city to improve urban life.
+        </p>
+        <div class="readmore">Read Full Story</div>
+    </div>
+
+    <!-- TRENDING -->
+    <div class="trending">
+        <h3>Trending</h3>
+        <ul>
+            <li>AI transforming Nepal’s job market</li>
+            <li>Tourism hits record high in 2026</li>
+            <li>Global economy shows recovery</li>
+            <li>New tech startups rising in Kathmandu</li>
+            <li>Weather shifts expected this week</li>
+        </ul>
+    </div>
+
+</div>
+
+<!-- GRID NEWS -->
+<div class="grid">
+    <div class="card">
+        <h4>City Development</h4>
+        <p>New road expansion projects approved for major Kathmandu routes.</p>
+    </div>
+
+    <div class="card">
+        <h4>Technology</h4>
+        <p>AI-based apps are rapidly changing how students learn in Nepal.</p>
+    </div>
+
+    <div class="card">
+        <h4>Business</h4>
+        <p>Investors show strong interest in Nepal’s growing startup ecosystem.</p>
+    </div>
+
+    <div class="card">
+        <h4>Sports</h4>
+        <p>Nepal’s cricket team prepares for upcoming international series.</p>
+    </div>
+
+    <div class="card">
+        <h4>World</h4>
+        <p>Global leaders discuss climate and economic stability at summit.</p>
+    </div>
+
+    <div class="card">
+        <h4>Entertainment</h4>
+        <p>Nepali film industry sees record-breaking audience growth.</p>
     </div>
 </div>
 
-<!-- NEWS MODAL -->
+<!-- MODAL -->
 <div class="modal" id="modal">
     <div class="modal-box">
-        <h2>Select News Category</h2>
-        <div class="categories">
-            <div class="cat" data="city">City</div>
-            <div class="cat" data="business">Business</div>
-            <div class="cat" data="tech">Technology</div>
-            <div class="cat" data="sports">Sports</div>
-            <div class="cat" data="world">World</div>
-        </div>
+        <h3>Select Category</h3>
+
+        <div class="cat" data="city">City News</div>
+        <div class="cat" data="business">Business</div>
+        <div class="cat" data="tech">Technology</div>
+        <div class="cat" data="sports">Sports</div>
+        <div class="cat" data="world">World</div>
+
         <div id="news"></div>
     </div>
 </div>
 
 <script>
-/* DARK MODE */
-document.getElementById("themeBtn").onclick=()=>{
-    document.body.classList.toggle("dark");
-};
 
-/* MODAL */
-const modal=document.getElementById("modal");
 document.getElementById("newsBtn").onclick=()=>{
-    modal.style.display="flex";
-};
-modal.onclick=(e)=>{
-    if(e.target===modal) modal.style.display="none";
+    document.getElementById("modal").style.display="flex";
 };
 
-/* NEWS DATA */
+document.getElementById("modal").onclick=(e)=>{
+    if(e.target.id==="modal") e.target.style.display="none";
+};
+
 const data={
-    city:["Road expansion in Kathmandu","Smart traffic lights installed"],
-    business:["Stock market rises","Startups attract investors"],
-    tech:["AI tools growing fast","New mobile apps launched"],
-    sports:["Nepal wins match","Cricket league announced"],
-    world:["Global summit held","Economy updates worldwide"]
+    city:["Kathmandu road expansion begins","Smart traffic lights installed"],
+    business:["Stock market rises","Startup funding increases"],
+    tech:["AI tools grow rapidly","New apps launched in Nepal"],
+    sports:["Nepal wins big match","Cricket league announced"],
+    world:["Global summit held","Economy shows recovery"]
 };
 
-/* CATEGORY CLICK */
 document.querySelectorAll(".cat").forEach(btn=>{
     btn.onclick=()=>{
         const key=btn.getAttribute("data");
-        const newsBox=document.getElementById("news");
-        newsBox.innerHTML="";
+        const box=document.getElementById("news");
+        box.innerHTML="";
         data[key].forEach(n=>{
             let div=document.createElement("div");
             div.className="news-item";
             div.innerText=n;
-            newsBox.appendChild(div);
+            box.appendChild(div);
         });
     }
 });
+
 </script>
 
 </body>
