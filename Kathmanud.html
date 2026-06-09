@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Kathmandu Times</title>
+<style>
+    /* --- GENERAL STYLING --- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Arial', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(120deg, #00c6ff, #0072ff); /* light blue gradient */
+        color: #333;
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    /* --- CLOCK ANIMATION BACKGROUND --- */
+    #clockCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    /* --- HEADER --- */
+    header {
+        background-color: #ff6f61; /* coral color */
+        padding: 20px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+        font-size: 2.5em;
+        letter-spacing: 2px;
+    }
+
+    /* --- NAVBAR --- */
+    nav {
+        display: flex;
+        justify-content: center;
+        background-color: #ff8c7a;
+        padding: 10px 0;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    nav a:hover {
+        color: #ffe5e0;
+    }
+
+    /* --- MAIN CONTENT --- */
+    .container {
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .news-card {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        transition: transform 0.3s;
+    }
+
+    .news-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .news-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .news-content {
+        padding: 15px;
+    }
+
+    .news-content h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #ff6f61;
+    }
+
+    .news-content p {
+        font-size: 1em;
+        line-height: 1.5em;
+        color: #333;
+    }
+
+    /* --- FOOTER --- */
+    footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #ff6f61;
+        color: white;
+        margin-top: 40px;
+    }
+
+</style>
+</head>
+<body>
+
+<canvas id="clockCanvas"></canvas>
+
+<header>
+    <h1>The Kathmandu Times</h1>
+</header>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#">National</a>
+    <a href="#">International</a>
+    <a href="#">Technology</a>
+    <a href="#">Sports</a>
+    <a href="#">Entertainment</a>
+</nav>
+
+<div class="container">
+    <div class="news-grid">
+        <div class="news-card">
+            <img src="https://via.placeholder.com/400x180" alt="News Image">
+            <div class="news-content">
+                <h2>Kathmandu Celebrates Festival</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://via.placeholder.com/400x180" alt="News Image">
+            <div class="news-content">
+                <h2>Tech Innovations in Nepal</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://via.placeholder.com/400x180" alt="News Image">
+            <div class="news-content">
+                <h2>Local Sports Team Wins</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://via.placeholder.com/400x180" alt="News Image">
+            <div class="news-content">
+                <h2>Entertainment Highlights</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus nulla sit amet est cursus, vitae hendrerit erat varius.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 The Kathmandu Times. All Rights Reserved.
+</footer>
+
+<script>
+    // --- CLOCK ANIMATION ---
+    const canvas = document.getElementById('clockCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const clockRings = [];
+    const ringCount = 50;
+
+    for(let i=0;i<ringCount;i++){
+        clockRings.push({
+            x: Math.random()*width,
+            y: Math.random()*height,
+            radius: Math.random()*50+20,
+            speed: Math.random()*0.02+0.01,
+            angle: Math.random()*Math.PI*2,
+            color: `rgba(255,255,255,${Math.random()*0.5+0.2})`
+        });
+    }
+
+    function drawClockRings(){
+        ctx.clearRect(0,0,width,height);
+        clockRings.forEach(r=>{
+            ctx.beginPath();
+            ctx.arc(r.x + Math.cos(r.angle)*r.radius, r.y + Math.sin(r.angle)*r.radius, 3, 0, Math.PI*2);
+            ctx.fillStyle = r.color;
+            ctx.fill();
+            r.angle += r.speed;
+        });
+        requestAnimationFrame(drawClockRings);
+    }
+
+    drawClockRings();
+</script>
+
+</body>
+</html>
